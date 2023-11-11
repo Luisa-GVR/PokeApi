@@ -252,5 +252,20 @@ public class Main {
 
         System.out.println("Descripción del movimiento " + selectedMove + ": " + moveDescription);
 
+
+
+        /*
+        PokemonInfoDisplay es lo que se debe actualizar para el diseño
+        Se pueden agregar mas argumentos como moveProperties o MoveDescription
+        SelectedPokemon es el nombre
+        Type el tipo del pokemon
+        selectedAbility la habilidad que agregó el usuario
+        selectedMove el movimiento
+        con el getPokemonArtwork se saca la imagen
+        moveProperties es el ataque, tipo y accuracy del movimiento
+        moveDescription la descripcion
+
+         */
+
     }
 }
