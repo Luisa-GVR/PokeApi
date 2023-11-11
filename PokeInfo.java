@@ -88,8 +88,8 @@ public class PokeInfo {
             in.close();
 
             JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
-            JsonObject generation = jsonObject.getAsJsonObject("generation");
-            String generationName = generation.get("name").getAsString();
+            JsonObject generationInfo = jsonObject.getAsJsonObject("generation");
+            String generationName = generationInfo.get("name").getAsString();
 
             return "Generation: " + generationName;
         } catch (Exception e) {
@@ -158,10 +158,9 @@ public class PokeInfo {
             return "Unknown";
         }
     }
-
-    public String getPokedexEntry(String pokemonName) {
+    public static String getPokemonArtwork(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon-species/" + pokemonName);
+            URL url = new URL("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -175,24 +174,16 @@ public class PokeInfo {
             in.close();
 
             JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
-            JsonArray entries = jsonObject.getAsJsonArray("flavor_text_entries");
+            String frontDefaultImageURL = jsonObject.getAsJsonObject("sprites").get("other")
+                    .getAsJsonObject().getAsJsonObject("official-artwork").get("front_default").getAsString();
 
-            String generationEntry = "Entry: ";
-            for (JsonElement entry : entries) {
-                JsonObject entryObject = entry.getAsJsonObject();
-                JsonObject language = entryObject.getAsJsonObject("language");
-                String languageName = language.get("name").getAsString();
-
-                if (languageName.equals("en")) {
-                    generationEntry += entryObject.get("flavor_text").getAsString();
-                    break;
-                }
-            }
-
-            return generationEntry;
+            return frontDefaultImageURL;
         } catch (Exception e) {
+            e.printStackTrace();
             return "Unknown";
         }
     }
+
+
 
 }

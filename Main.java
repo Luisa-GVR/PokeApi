@@ -15,6 +15,7 @@ public class Main {
                 searchOptions[0]
         );
 
+
         String[] allPokemonNames = PokemonAPI.getPokemonNames();
         Thread typeThread = null;
         Thread generationThread = null;
@@ -102,14 +103,14 @@ public class Main {
                      dialog.setVisible(true);
 
                     ArrayList<String> pokemonsByGeneration = new ArrayList<>();
-                    for (String name : allPokemonNames) {
-                        PokeInfo pokeInfo = new PokeInfo();
-                        String genInfo = pokeInfo.getPokemonGeneration(name);
-                        if (genInfo.contains(selectedGeneration)) {
-                            pokemonsByGeneration.add(name);
-                            System.out.println(name); // Imprimir en consola los Pokémon
-                        }
-                    }
+                     for (String name : allPokemonNames) {
+                         PokeInfo pokeInfo = new PokeInfo();
+                         String genInfo = pokeInfo.getPokemonGeneration(name);
+                         if (genInfo.equals("Generation: " + selectedGeneration)) {
+
+                             pokemonsByGeneration.add(name);
+                         }
+                     }
 
                     dialog.dispose();
 
@@ -195,20 +196,53 @@ public class Main {
 
         System.out.println("Pokémon seleccionado: " + pokemonSeleccionado.get());
         String selectedPokemon = pokemonSeleccionado.get();
-                if (!selectedPokemon.isEmpty()) {
-                    PokeInfo pokeInfo = new PokeInfo();
-                    String type = pokeInfo.getPokemonType(selectedPokemon);
-                    String abilities = pokeInfo.getPokemonAbilities(selectedPokemon);
-                    String moves = pokeInfo.getPokemonMoves(selectedPokemon);
-                    String pokedexEntry = pokeInfo.getPokedexEntry(selectedPokemon);
 
-                    // Mostrar la información del Pokémon seleccionado
-                    System.out.println("Pokémon seleccionado: " + selectedPokemon);
-                    System.out.println("Type: " + type);
-                    System.out.println("Abilities: " + abilities);
-                    System.out.println("Moves: " + moves);
-                    System.out.println("Pokédex Entry: " + pokedexEntry);
+        String type = "";
+        String abilities = "";
+        String moves = "";
+        String pokedexEntry ="";
+
+        if (!selectedPokemon.isEmpty()) {
+                    PokeInfo pokeInfo = new PokeInfo();
+                    type = pokeInfo.getPokemonType(selectedPokemon);
+                    abilities = pokeInfo.getPokemonAbilities(selectedPokemon);
+                    moves = pokeInfo.getPokemonMoves(selectedPokemon);
+
                 }
+
+
+        String[] abilitiesArray = abilities.split(", ");
+        for (int i = 0; i < abilitiesArray.length; i++) {
+            abilitiesArray[i] = abilitiesArray[i].replaceAll("Abilities: ", "");
+        }
+
+        String[] movesArray = moves.split(", ");
+        for (int i = 0; i < movesArray.length; i++) {
+            movesArray[i] = movesArray[i].replaceAll("Moves: ", "");
+        }
+
+        String selectedAbility = (String) JOptionPane.showInputDialog(
+                null,
+                "Selecciona una habilidad:",
+                "Habilidades del Pokémon",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                abilitiesArray,
+                abilitiesArray[0]
+        );
+
+        String selectedMove = (String) JOptionPane.showInputDialog(
+                null,
+                "Selecciona un movimiento:",
+                "Movimientos del Pokémon",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                movesArray,
+                movesArray[0]
+        );
+
+        PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove, PokeInfo.getPokemonArtwork(selectedPokemon));
+
 
     }
 }
