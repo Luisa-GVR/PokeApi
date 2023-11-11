@@ -184,6 +184,65 @@ public class PokeInfo {
         }
     }
 
+    public static String getMoveProperties(String moveName) {
+        try {
+            URL url = new URL("https://pokeapi.co/api/v2/move/" + moveName);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+
+            String type = jsonObject.getAsJsonObject("type").get("name").getAsString();
+            String power = jsonObject.has("power") ? String.valueOf(jsonObject.get("power").getAsInt()) : "Unknown";
+            String accuracy = jsonObject.has("accuracy") ? String.valueOf(jsonObject.get("accuracy").getAsInt()) : "Unknown";
+
+            return "Type: " + type + ", Power: " + power + ", Accuracy: " + accuracy;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
 
 
+    public static String getMoveDescription(String moveName) {
+        try {
+            // Formar la URL del movimiento específico
+            String moveURL = "https://pokeapi.co/api/v2/move/" + moveName.toLowerCase().trim();
+
+            // Realizar la solicitud HTTP
+            URL url = new URL(moveURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Leer la respuesta
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Analizar la respuesta JSON para obtener la descripción del movimiento
+            JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+            String description = jsonObject.getAsJsonArray("effect_entries")
+                    .get(0).getAsJsonObject()
+                    .get("effect").getAsString();
+
+            return description;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Descripción no disponible";
+        }
+    }
 }

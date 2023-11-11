@@ -34,6 +34,8 @@ public class Main {
                         allPokemonNames[0]
                 );
                 System.out.println("Nombre seleccionado: " + selectedName);
+                pokemonSeleccionado.set(selectedName);
+
                 break;
 
             case "Tipo":
@@ -243,6 +245,12 @@ public class Main {
 
         PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove, PokeInfo.getPokemonArtwork(selectedPokemon));
 
+        String moveProperties = PokeInfo.getMoveProperties(selectedMove);
+
+        System.out.println("Propiedades del movimiento " + selectedMove + ": " + moveProperties);
+        String moveDescription = PokeInfo.getMoveDescription(selectedMove);
+
+        System.out.println("Descripción del movimiento " + selectedMove + ": " + moveDescription);
 
     }
 }
