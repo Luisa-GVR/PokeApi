@@ -3,15 +3,27 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 
 public class PokeInfo {
+
+    private static final Properties properties = new Properties();
+
+    static {
+        try (InputStream input = new FileInputStream("config.properties")) {
+            properties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public String getPokemonType(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            String apiURL = properties.getProperty("base_api_url") + "pokemon/" + pokemonName;
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -43,9 +55,11 @@ public class PokeInfo {
         }
     }
 
+
     public String getPokemonEggGroup(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon-species/" + pokemonName);
+            String apiURL = properties.getProperty("base_api_url") + "pokemon-species/" + pokemonName;
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -72,9 +86,11 @@ public class PokeInfo {
         }
     }
 
+
     public String getPokemonGeneration(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon-species/" + pokemonName);
+            String apiURL = properties.getProperty("base_api_url") + "pokemon-species/" + pokemonName;
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -97,9 +113,11 @@ public class PokeInfo {
         }
     }
 
+
     public String getPokemonAbilities(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            String apiURL = properties.getProperty("base_api_url") + "pokemon/" + pokemonName;
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -127,10 +145,10 @@ public class PokeInfo {
             return "Unknown";
         }
     }
-
     public String getPokemonMoves(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            String apiURL = properties.getProperty("base_api_url") + "pokemon/" + pokemonName;
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -160,7 +178,8 @@ public class PokeInfo {
     }
     public static String getPokemonArtwork(String pokemonName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            String apiURL = properties.getProperty("base_api_url") + "pokemon/" + pokemonName;
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -186,13 +205,16 @@ public class PokeInfo {
 
     public static String getMoveProperties(String moveName) {
         try {
-            URL url = new URL("https://pokeapi.co/api/v2/move/" + moveName);
+            InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties");
+            properties.load(input);
+
+            URL url = new URL(properties.getProperty("base_api_url") + "move/" + moveName);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
 
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
@@ -212,18 +234,19 @@ public class PokeInfo {
         }
     }
 
-
     public static String getMoveDescription(String moveName) {
         try {
-            // Formar la URL del movimiento específico
-            String moveURL = "https://pokeapi.co/api/v2/move/" + moveName.toLowerCase().trim();
+            Properties properties = new Properties();
+            try (InputStream input = PokeInfo.class.getClassLoader().getResourceAsStream("config.properties")) {
+                properties.load(input);
+            }
 
-            // Realizar la solicitud HTTP
+            String moveURL = properties.getProperty("base_api_url") + "move/" + moveName.toLowerCase().trim();
+
             URL url = new URL(moveURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            // Leer la respuesta
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String inputLine;
@@ -233,7 +256,6 @@ public class PokeInfo {
             }
             in.close();
 
-            // Analizar la respuesta JSON para obtener la descripción del movimiento
             JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
             String description = jsonObject.getAsJsonArray("effect_entries")
                     .get(0).getAsJsonObject()
@@ -245,4 +267,5 @@ public class PokeInfo {
             return "Descripción no disponible";
         }
     }
+
 }

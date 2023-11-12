@@ -3,19 +3,28 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import javax.swing.JOptionPane;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 
-class PokemonAPI {
-    private static final String BASE_API_URL = "https://pokeapi.co/api/v2/";
+class PokemonApi {
+    private static final Properties properties = new Properties();
+
+    static {
+        try (InputStream input = new FileInputStream("config.properties")) {
+            properties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     static String[] getPokemonNames() {
         ArrayList<String> names = new ArrayList<>();
         try {
-            URL url = new URL(BASE_API_URL + "pokemon?limit=1000");
+            String apiURL = properties.getProperty("base_api_url") + properties.getProperty("pokemon_names_endpoint");
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -45,7 +54,8 @@ class PokemonAPI {
     static String[] getPokemonTypes() {
         ArrayList<String> types = new ArrayList<>();
         try {
-            URL url = new URL(BASE_API_URL + "type");
+            String apiURL = properties.getProperty("base_api_url") + properties.getProperty("pokemon_types_endpoint");
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -75,7 +85,8 @@ class PokemonAPI {
     static String[] getPokemonGenerations() {
         ArrayList<String> generations = new ArrayList<>();
         try {
-            URL url = new URL(BASE_API_URL + "generation");
+            String apiURL = properties.getProperty("base_api_url") + properties.getProperty("generation_endpoint");
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -106,7 +117,8 @@ class PokemonAPI {
     static String[] getPokemonEggGroups() {
         ArrayList<String> eggGroups = new ArrayList<>();
         try {
-            URL url = new URL(BASE_API_URL + "egg-group");
+            String apiURL = properties.getProperty("base_api_url") + properties.getProperty("egg_group_endpoint");
+            URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -132,5 +144,6 @@ class PokemonAPI {
         }
         return eggGroups.toArray(new String[0]);
     }
+
 
 }

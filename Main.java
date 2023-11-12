@@ -1,9 +1,14 @@
 import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Main {
     public static void main(String[] args) {
+
         String[] searchOptions = {"Nombre", "Tipo", "Generación", "EggGroup"};
         String searchCriteria = (String) JOptionPane.showInputDialog(
                 null,
@@ -16,7 +21,7 @@ public class Main {
         );
 
 
-        String[] allPokemonNames = PokemonAPI.getPokemonNames();
+        String[] allPokemonNames = PokemonApi.getPokemonNames();
         Thread typeThread = null;
         Thread generationThread = null;
         Thread eggGroupThread = null;
@@ -39,7 +44,7 @@ public class Main {
                 break;
 
             case "Tipo":
-                String[] pokemonTypes = PokemonAPI.getPokemonTypes();
+                String[] pokemonTypes = PokemonApi.getPokemonTypes();
                 String selectedType = (String) JOptionPane.showInputDialog(
                         null,
                         "Selecciona un tipo:",
@@ -86,7 +91,7 @@ public class Main {
                 break;
 
             case "Generación":
-                String[] pokemonGenerations = PokemonAPI.getPokemonGenerations();
+                String[] pokemonGenerations = PokemonApi.getPokemonGenerations();
                 String selectedGeneration = (String) JOptionPane.showInputDialog(
                         null,
                         "Selecciona una generación:",
@@ -127,7 +132,7 @@ public class Main {
                 break;
 
             case "EggGroup":
-                String[] pokemonEggGroups = PokemonAPI.getPokemonEggGroups();
+                String[] pokemonEggGroups = PokemonApi.getPokemonEggGroups();
                 String selectedEggGroup = (String) JOptionPane.showInputDialog(
                         null,
                         "Selecciona un grupo de huevo:",
@@ -268,4 +273,5 @@ public class Main {
          */
 
     }
+
 }
