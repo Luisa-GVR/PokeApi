@@ -207,7 +207,6 @@ public class Main {
         String type = "";
         String abilities = "";
         String moves = "";
-        String pokedexEntry ="";
 
         if (!selectedPokemon.isEmpty()) {
                     PokeInfo pokeInfo = new PokeInfo();
