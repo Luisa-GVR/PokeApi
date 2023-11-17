@@ -6,15 +6,15 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 public class PokemonInfoDisplay {
-    public static void displayInfo(String selectedPokemon, String type, String selectedAbility, String selectedMove, String imageUrl) {
+    public static void displayInfo(String selectedPokemon, String type, String selectedAbility,
+                                   String selectedMove, String imageUrl, String moveProperties, String moveDescription) {
         JFrame frame = new JFrame("Información del Pokémon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
 
-        // Crear una etiqueta para mostrar la imagen del Pokémon
         JLabel imageLabel = new JLabel();
         try {
-            URL imageURL = new URL(imageUrl); // Usar la URL recibida en lugar de una fija
+            URL imageURL = new URL(imageUrl);
             BufferedImage img = ImageIO.read(imageURL);
             ImageIcon imageIcon = new ImageIcon(img);
             imageLabel.setIcon(imageIcon);
@@ -27,14 +27,20 @@ public class PokemonInfoDisplay {
         JLabel typeLabel = new JLabel("Tipo: " + type);
         JLabel abilityLabel = new JLabel("Habilidad seleccionada: " + selectedAbility);
         JLabel moveLabel = new JLabel("Movimiento seleccionado: " + selectedMove);
+        JLabel moveDescLabel = new JLabel("Descripcion del movimiento: " + moveDescription);
+        JLabel movePropLabel = new JLabel("Propiedades del movimiento: " + moveProperties);
 
-        // Configurar el diseño de la ventana para mostrar la información
+
+
+
         JPanel panel = new JPanel(new GridLayout(6, 1));
         panel.add(imageLabel);
         panel.add(nameLabel);
         panel.add(typeLabel);
         panel.add(abilityLabel);
         panel.add(moveLabel);
+        panel.add(moveDescLabel);
+        panel.add(movePropLabel);
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.setVisible(true);

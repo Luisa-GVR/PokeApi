@@ -182,6 +182,9 @@ public class Main {
                 break;
         }
 
+        // Cierre del switch
+
+
         if (typeThread != null) {
             try {
                 typeThread.join();
@@ -205,6 +208,8 @@ public class Main {
                 e.printStackTrace();
             }
         }
+
+        // Conectar los threads
 
         System.out.println("Pokémon seleccionado: " + pokemonSeleccionado.get());
         String selectedPokemon = pokemonSeleccionado.get();
@@ -251,13 +256,14 @@ public class Main {
                 movesArray,
                 movesArray[0]
         );
-
-        PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove, PokeInfo.getPokemonArtwork(selectedPokemon));
-
         String moveProperties = PokeInfo.getMoveProperties(selectedMove);
+        String moveDescription = PokeInfo.getMoveDescription(selectedMove);
+
+
+        PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove, PokeInfo.getPokemonArtwork(selectedPokemon), moveProperties, moveDescription);
+
 
         System.out.println("Propiedades del movimiento " + selectedMove + ": " + moveProperties);
-        String moveDescription = PokeInfo.getMoveDescription(selectedMove);
 
         System.out.println("Descripción del movimiento " + selectedMove + ": " + moveDescription);
 
