@@ -26,19 +26,24 @@ public class Main {
         Thread generationThread = null;
         Thread eggGroupThread = null;
         AtomicReference<String> pokemonSeleccionado = new AtomicReference<>("");
+        String selectedName = null;
 
         switch (searchCriteria) {
             case "Nombre":
-                String selectedName = (String) JOptionPane.showInputDialog(
-                        null,
-                        "Selecciona un Pokémon:",
-                        "Nombres de Pokémon",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        allPokemonNames,
-                        allPokemonNames[0]
-                );
-                System.out.println("Nombre seleccionado: " + selectedName);
+                boolean nombreValido = false;
+                do {
+                    selectedName = JOptionPane.showInputDialog(null, "Escriba el nombre del pokemon");
+                    for (String pokemonName : allPokemonNames) {
+                        if (pokemonName.equalsIgnoreCase(selectedName)) {
+                            nombreValido = true;
+                            break;
+                        }
+                    }
+
+                    if (!nombreValido) {JOptionPane.showMessageDialog(null, "El nombre ingresado no es válido. Inténtelo de nuevo.");
+                    }
+                } while (!nombreValido);
+
                 pokemonSeleccionado.set(selectedName);
 
                 break;
