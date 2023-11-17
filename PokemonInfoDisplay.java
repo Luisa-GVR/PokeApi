@@ -13,6 +13,7 @@ public class PokemonInfoDisplay {
         JFrame frame = new JFrame("Información del Pokémon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
+        frame.setResizable(false);
 
         JLabel imageLabel = new JLabel();
         try {
