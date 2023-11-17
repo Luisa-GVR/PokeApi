@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 public class PokemonInfoDisplay {
@@ -44,7 +46,28 @@ public class PokemonInfoDisplay {
         if (!moveProperties.equals("")) {
             panel.add(movePropLabel);
         }
+
+        String url = typeCheck(moveProperties);
+        ImageIcon typeIcon = new ImageIcon(url);
+        JLabel typeIconLabel = new JLabel();
+        typeIconLabel.setIcon(typeIcon);
+        panel.add(typeIconLabel);
+        System.out.println(url);
+
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.setVisible(true);
+    }
+
+
+    public static String typeCheck(String tipo) {
+
+        Pattern pattern = Pattern.compile("Type: (\\w+), Power: \\d+, Accuracy: \\d+");
+        Matcher matcher = pattern.matcher(tipo);
+
+        if (matcher.find()) {
+            return "iconosTipos/" + (matcher.group(1)) + ".png";
+        } else {
+            return "";
+        }
     }
 }
