@@ -40,8 +40,10 @@ public class PokemonInfoDisplay {
         panel.add(abilityLabel);
         panel.add(moveLabel);
         panel.add(moveDescLabel);
-        panel.add(movePropLabel);
-
+        //agrega o no properties, dependiendo de si es un movimiento de buffeo
+        if (!moveProperties.equals("")) {
+            panel.add(movePropLabel);
+        }
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.setVisible(true);
     }

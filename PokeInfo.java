@@ -224,15 +224,16 @@ public class PokeInfo {
             JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
 
             String type = jsonObject.getAsJsonObject("type").get("name").getAsString();
-            String power = jsonObject.has("power") ? String.valueOf(jsonObject.get("power").getAsInt()) : "Unknown";
-            String accuracy = jsonObject.has("accuracy") ? String.valueOf(jsonObject.get("accuracy").getAsInt()) : "Unknown";
+            String power = jsonObject.has("power") ? String.valueOf(jsonObject.get("power").getAsInt()) : "";
+            String accuracy = jsonObject.has("accuracy") ? String.valueOf(jsonObject.get("accuracy").getAsInt()) : "";
 
             return "Type: " + type + ", Power: " + power + ", Accuracy: " + accuracy;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Unknown";
+            return "";
         }
     }
+
 
     public static String getMoveDescription(String moveName) {
         try {

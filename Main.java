@@ -259,15 +259,7 @@ public class Main {
         String moveProperties = PokeInfo.getMoveProperties(selectedMove);
         String moveDescription = PokeInfo.getMoveDescription(selectedMove);
 
-
         PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove, PokeInfo.getPokemonArtwork(selectedPokemon), moveProperties, moveDescription);
-
-
-        System.out.println("Propiedades del movimiento " + selectedMove + ": " + moveProperties);
-
-        System.out.println("Descripción del movimiento " + selectedMove + ": " + moveDescription);
-
-
 
         /*
         PokemonInfoDisplay es lo que se debe actualizar para el diseño
