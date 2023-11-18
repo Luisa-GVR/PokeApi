@@ -115,7 +115,11 @@ public class PokemonInfoDisplay {
         JButton saveButton = new JButton("Save");
         saveButton.setBounds((backgroundTypeLabel.getPreferredSize().width/2)-25, backgroundTypeLabel.getPreferredSize().height+5,
                 saveButton.getPreferredSize().width, saveButton.getPreferredSize().height);
-        saveButton.addActionListener(e -> saveLayeredPaneAsImage(layeredPane));
+        saveButton.addActionListener(e -> {
+            saveButton.setVisible(false);
+            saveLayeredPaneAsImage(layeredPane);
+            saveButton.setVisible(true);
+        });
 
         layeredPane.add(saveButton, JLayeredPane.DEFAULT_LAYER);
 
