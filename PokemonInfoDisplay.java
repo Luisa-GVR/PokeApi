@@ -12,8 +12,15 @@ public class PokemonInfoDisplay {
                                    String selectedMove, String imageUrl, String moveProperties, String moveDescription) {
         JFrame frame = new JFrame("Información del Pokémon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+
+        String urlBackground = backgroundCheck(type);
+        ImageIcon typeBackground = new ImageIcon(urlBackground);
+        JLabel backgroundTypeLabel = new JLabel(typeBackground);
+
+        frame.setSize(backgroundTypeLabel.getPreferredSize().width+20, backgroundTypeLabel.getPreferredSize().height+45);
         frame.setResizable(false);
+
+        JLayeredPane layeredPane = new JLayeredPane();
 
         JLabel imageLabel = new JLabel();
         try {
@@ -25,7 +32,8 @@ public class PokemonInfoDisplay {
             e.printStackTrace();
         }
 
-        // Crear etiquetas para mostrar la información del Pokémon
+
+
         JLabel nameLabel = new JLabel("Nombre: " + selectedPokemon);
         JLabel typeLabel = new JLabel("Tipo: " + type);
         JLabel abilityLabel = new JLabel("Habilidad seleccionada: " + selectedAbility);
@@ -33,34 +41,49 @@ public class PokemonInfoDisplay {
         JLabel moveDescLabel = new JLabel("Descripcion del movimiento: " + moveDescription);
         JLabel movePropLabel = new JLabel("Propiedades del movimiento: " + moveProperties);
 
+        // Establecer los límites de los componentes
+        backgroundTypeLabel.setBounds(0,0, backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height);
+        imageLabel.setBounds(230, 100, imageLabel.getPreferredSize().width, imageLabel.getPreferredSize().height);
+        nameLabel.setBounds(10, 10, nameLabel.getPreferredSize().width, nameLabel.getPreferredSize().height);
+        typeLabel.setBounds(10, 30, typeLabel.getPreferredSize().width, typeLabel.getPreferredSize().height);
+        abilityLabel.setBounds(10, 50, abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height);
+        moveLabel.setBounds(10, 70, moveLabel.getPreferredSize().width, moveLabel.getPreferredSize().height);
+        moveDescLabel.setBounds(10, 90, moveDescLabel.getPreferredSize().width, moveDescLabel.getPreferredSize().height);
+        movePropLabel.setBounds(10, 110, movePropLabel.getPreferredSize().width, movePropLabel.getPreferredSize().height);
 
+        // Añadir los componentes al JLayeredPane con diferentes capas
+        layeredPane.add(backgroundTypeLabel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(imageLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(nameLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(typeLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(abilityLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(moveLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(moveDescLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(movePropLabel, JLayeredPane.PALETTE_LAYER);
 
+        // Establecer el tamaño preferido del JLayeredPane
+        layeredPane.setPreferredSize(new Dimension(backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height));
 
-        JPanel panel = new JPanel(new GridLayout(6, 1));
-        panel.add(imageLabel);
-        panel.add(nameLabel);
-        panel.add(typeLabel);
-        panel.add(abilityLabel);
-        panel.add(moveLabel);
-        panel.add(moveDescLabel);
-        //agrega o no properties, dependiendo de si es un movimiento de buffeo
-        if (!moveProperties.equals("")) {
-            panel.add(movePropLabel);
-        }
-
-        String url = typeCheck(moveProperties);
-        ImageIcon typeIcon = new ImageIcon(url);
-        JLabel typeIconLabel = new JLabel();
-        typeIconLabel.setIcon(typeIcon);
-        panel.add(typeIconLabel);
-        System.out.println(url);
-
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
 
-    public static String typeCheck(String tipo) {
+
+    public static String backgroundCheck(String tipo) {
+        Pattern pattern = Pattern.compile("Primary Type: (\\w+)(, Secondary Type: \\d+)?");
+        Matcher matcher = pattern.matcher(tipo);
+
+        if (matcher.find()) {
+            String tipoPrincipal = matcher.group(1);
+            return "fondosTipos/" + tipoPrincipal + ".png";
+        } else {
+            return "";
+        }
+    }
+
+
+    public static String typeCheck(String tipo){
 
         Pattern pattern = Pattern.compile("Type: (\\w+), Power: \\d+, Accuracy: \\d+");
         Matcher matcher = pattern.matcher(tipo);
@@ -70,5 +93,6 @@ public class PokemonInfoDisplay {
         } else {
             return "";
         }
+
     }
 }
