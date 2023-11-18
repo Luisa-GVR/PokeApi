@@ -13,9 +13,24 @@ public class PokemonInfoDisplay {
         JFrame frame = new JFrame("Información del Pokémon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
+        //imagenes
         String urlBackground = backgroundCheck(type);
         ImageIcon typeBackground = new ImageIcon(urlBackground);
         JLabel backgroundTypeLabel = new JLabel(typeBackground);
+
+        String urlType = "";
+        //Hace especial si no hay properties
+        if (!moveProperties.equals("")){
+            urlType = typeCheck(moveProperties);
+        } else {
+            urlType = "iconosTipos/especial.png";
+        }
+
+        ImageIcon typeIcon = new ImageIcon(urlType);
+        JLabel typeIconLabel = new JLabel(typeIcon);
+
+
 
         frame.setSize(backgroundTypeLabel.getPreferredSize().width+20, backgroundTypeLabel.getPreferredSize().height+45);
         frame.setResizable(false);
@@ -33,7 +48,7 @@ public class PokemonInfoDisplay {
         }
 
 
-
+        //mas texto que nada
         JLabel nameLabel = new JLabel("Nombre: " + selectedPokemon);
         JLabel typeLabel = new JLabel("Tipo: " + type);
         JLabel abilityLabel = new JLabel("Habilidad seleccionada: " + selectedAbility);
@@ -44,6 +59,7 @@ public class PokemonInfoDisplay {
         // Establecer los límites de los componentes
         backgroundTypeLabel.setBounds(0,0, backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height);
         imageLabel.setBounds(230, 100, imageLabel.getPreferredSize().width, imageLabel.getPreferredSize().height);
+        typeIconLabel.setBounds(80, 650, typeIconLabel.getPreferredSize().width, typeIconLabel.getPreferredSize().height);
         nameLabel.setBounds(10, 10, nameLabel.getPreferredSize().width, nameLabel.getPreferredSize().height);
         typeLabel.setBounds(10, 30, typeLabel.getPreferredSize().width, typeLabel.getPreferredSize().height);
         abilityLabel.setBounds(10, 50, abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height);
@@ -54,12 +70,17 @@ public class PokemonInfoDisplay {
         // Añadir los componentes al JLayeredPane con diferentes capas
         layeredPane.add(backgroundTypeLabel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(imageLabel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(typeIconLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(nameLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(typeLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(abilityLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(moveLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(moveDescLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(movePropLabel, JLayeredPane.PALETTE_LAYER);
+
+        //Hace especial si no hay properties
+        if (!moveProperties.equals("")){
+        }
 
         // Establecer el tamaño preferido del JLayeredPane
         layeredPane.setPreferredSize(new Dimension(backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height));
