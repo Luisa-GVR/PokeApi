@@ -234,6 +234,63 @@ public class PokeInfo {
         }
     }
 
+    public static String getPokemonPreEvolution(String pokemonName) {
+        try {
+            String apiURL = properties.getProperty("base_api_url") + "pokemon-species/" + pokemonName.toLowerCase();
+            URL url = new URL(apiURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+            JsonObject evolvesFrom = jsonObject.getAsJsonObject("evolves_from_species");
+
+            if (evolvesFrom != null && !evolvesFrom.isJsonNull()) {
+                String preEvolutionName = evolvesFrom.get("name").getAsString();
+                return preEvolutionName;
+            } else {
+                return "";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error al obtener información de pre-evolución";
+        }
+    }
+
+    public static String getPokemonFrontSprite(String pokemonName) {
+        try {
+            String apiURL = properties.getProperty("base_api_url") + "pokemon/" + pokemonName.toLowerCase();
+            URL url = new URL(apiURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+            String frontDefaultImageURL = jsonObject.getAsJsonObject("sprites").get("front_default").getAsString();
+
+            return frontDefaultImageURL;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error al obtener el sprite frontal del Pokémon";
+        }
+    }
 
     public static String getMoveDescription(String moveName) {
         try {

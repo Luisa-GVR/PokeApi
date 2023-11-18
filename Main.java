@@ -259,7 +259,16 @@ public class Main {
         String moveProperties = PokeInfo.getMoveProperties(selectedMove);
         String moveDescription = PokeInfo.getMoveDescription(selectedMove);
 
-        PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove, PokeInfo.getPokemonArtwork(selectedPokemon), moveProperties, moveDescription);
+        String preEvolution = "";
+        String spritePreEvolutionURL = "";
+        //Obtener pre evolución + sprite
+        preEvolution = PokeInfo.getPokemonPreEvolution(selectedPokemon);
+        spritePreEvolutionURL = PokeInfo.getPokemonFrontSprite(preEvolution);
+
+
+        PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove,
+                PokeInfo.getPokemonArtwork(selectedPokemon), moveProperties, moveDescription,
+                preEvolution, spritePreEvolutionURL);
 
         /*
         PokemonInfoDisplay es lo que se debe actualizar para el diseño
