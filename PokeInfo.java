@@ -262,7 +262,7 @@ public class PokeInfo {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error al obtener información de pre-evolución";
+            return "";
         }
     }
 
@@ -288,7 +288,7 @@ public class PokeInfo {
             return frontDefaultImageURL;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error al obtener el sprite frontal del Pokémon";
+            return "";
         }
     }
 
@@ -322,8 +322,40 @@ public class PokeInfo {
             return description;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Descripción no disponible";
+            return "";
         }
     }
+
+    public static String pokedexEntry(String pokemonName) {
+        try {
+            URL url = new URL(properties.getProperty("base_api_url") + "pokemon-species/" + pokemonName.toLowerCase());
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+            JsonArray entries = jsonObject.getAsJsonArray("flavor_text_entries");
+
+            for (var element : entries) {
+                JsonObject entry = element.getAsJsonObject();
+                String language = entry.getAsJsonObject("language").get("name").getAsString();
+                if (language.equals("en")) {  // Cambia a tu idioma preferido si es diferente
+                    return entry.get("flavor_text").getAsString();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 
 }

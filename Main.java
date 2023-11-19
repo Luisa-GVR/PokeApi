@@ -265,14 +265,17 @@ public class Main {
         preEvolution = PokeInfo.getPokemonPreEvolution(selectedPokemon);
         spritePreEvolutionURL = PokeInfo.getPokemonFrontSprite(preEvolution);
 
+        String pokedex = PokeInfo.pokedexEntry(selectedPokemon);
+        String cleanPokedex = pokedex.replaceAll("\n", " ");
+        cleanPokedex = cleanPokedex.replaceAll("\f", "<br>");
+        cleanPokedex = "<html>" + cleanPokedex + "</html>";
 
         PokemonInfoDisplay.displayInfo(selectedPokemon, type, selectedAbility, selectedMove,
                 PokeInfo.getPokemonArtwork(selectedPokemon), moveProperties, moveDescription,
-                preEvolution, spritePreEvolutionURL);
+                preEvolution, spritePreEvolutionURL, cleanPokedex);
 
         /*
         PokemonInfoDisplay es lo que se debe actualizar para el diseño
-        Se pueden agregar mas argumentos como moveProperties o MoveDescription
         SelectedPokemon es el nombre
         Type el tipo del pokemon
         selectedAbility la habilidad que agregó el usuario
