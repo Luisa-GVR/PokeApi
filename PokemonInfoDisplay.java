@@ -5,11 +5,26 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 public class PokemonInfoDisplay {
+    public static String firstCapitalLetter(String palabra) {
+        // Verifica si el String no es nula
+        if (palabra != null && !palabra.isEmpty()) {
+            // Convierte la primera letra a mayúscula
+            return palabra.substring(0, 1).toUpperCase() + palabra.substring(1);
+        } else {
+            // Retorna el String original si es nula o vacía
+            return palabra;
+        }
+    }
+    private static JLabel fontSize(String text, int size) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Comics Sans MS", Font.BOLD, size)); // Puedes ajustar el tamaño según tus necesidades
+        return label;
+    }
+
 
     
     public static void displayInfo(String selectedPokemon, String type, String selectedAbility,
@@ -54,18 +69,15 @@ public class PokemonInfoDisplay {
         }
 
 
-
-
-
         //mas texto que nada
-        JLabel nameLabel = new JLabel(selectedPokemon);
-        JLabel typeLabel = new JLabel("Tipo: " + type);
-        JLabel abilityLabel = new JLabel(selectedAbility);
-        JLabel moveLabel = new JLabel(selectedMove);
-        JLabel moveDescLabel = new JLabel(moveDescription);
-        JLabel powerLabel = new JLabel(powerCheck(moveProperties));
-        JLabel accLablel = new JLabel(accCheck(moveProperties));
-        JLabel pokedexLabel = new JLabel(pokedex);
+        JLabel nameLabel = fontSize(firstCapitalLetter(selectedPokemon),32);
+        JLabel typeLabel = fontSize(firstCapitalLetter(type),20);
+        JLabel abilityLabel = fontSize(firstCapitalLetter(selectedAbility),20);
+        JLabel moveLabel = fontSize(firstCapitalLetter(selectedMove),20);
+        JLabel moveDescLabel = fontSize(firstCapitalLetter(moveDescription),16);
+        JLabel powerLabel = fontSize(firstCapitalLetter(powerCheck(moveProperties)),16);
+        JLabel accLabel = fontSize(firstCapitalLetter(accCheck(moveProperties)),16);
+        JLabel pokedexLabel = fontSize(firstCapitalLetter(pokedex),16);
 
         // Establecer los límites de los componentes
         backgroundTypeLabel.setBounds(0,0,
@@ -86,8 +98,8 @@ public class PokemonInfoDisplay {
                 moveDescLabel.getPreferredSize().width, moveDescLabel.getPreferredSize().height);
         pokedexLabel.setBounds(100,1100,
                 pokedexLabel.getPreferredSize().width, pokedexLabel.getPreferredSize().height);
-        accLablel.setBounds(270,1038,
-                accLablel.getPreferredSize().width, accLablel.getPreferredSize().height);
+        accLabel.setBounds(270,1038,
+                accLabel.getPreferredSize().width, accLabel.getPreferredSize().height);
         powerLabel.setBounds(130, 1038,
                 powerLabel.getPreferredSize().width, powerLabel.getPreferredSize().height);
 
@@ -103,7 +115,7 @@ public class PokemonInfoDisplay {
         layeredPane.add(moveDescLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(powerLabel, JLayeredPane.PALETTE_LAYER);
         layeredPane.add(pokedexLabel, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(accLablel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(accLabel, JLayeredPane.PALETTE_LAYER);
 
         //Pre evolución
         if (!preEvolution.equals("") && !spritePreEvolutionURL.equals("")) {
@@ -131,7 +143,7 @@ public class PokemonInfoDisplay {
             roundedRectanglePanel.setBounds(140, 125, 200, 50);
 
 
-            JLabel preEvoName = new JLabel("Evolves from: " + preEvolution);
+            JLabel preEvoName = new JLabel("Evolves from: " + firstCapitalLetter(preEvolution));
             preEvoName.setBounds(160,140, preEvoName.getPreferredSize().width, preEvoName.getPreferredSize().height);
             layeredPane.add(preEvoName, JLayeredPane.PALETTE_LAYER);
 

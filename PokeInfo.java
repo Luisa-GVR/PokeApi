@@ -251,9 +251,9 @@ public class PokeInfo {
             in.close();
 
             JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
-            JsonObject evolvesFrom = jsonObject.getAsJsonObject("evolves_from_species");
 
-            if (evolvesFrom != null && !evolvesFrom.isJsonNull()) {
+            if (jsonObject.has("evolves_from_species") && !jsonObject.get("evolves_from_species").isJsonNull()) {
+                JsonObject evolvesFrom = jsonObject.getAsJsonObject("evolves_from_species");
                 String preEvolutionName = evolvesFrom.get("name").getAsString();
                 return preEvolutionName;
             } else {
@@ -265,6 +265,7 @@ public class PokeInfo {
             return "";
         }
     }
+
 
     public static String getPokemonFrontSprite(String pokemonName) {
         try {
@@ -283,14 +284,26 @@ public class PokeInfo {
             in.close();
 
             JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
-            String frontDefaultImageURL = jsonObject.getAsJsonObject("sprites").get("front_default").getAsString();
 
-            return frontDefaultImageURL;
+            if (jsonObject.has("sprites") && !jsonObject.get("sprites").isJsonNull()) {
+                JsonObject sprites = jsonObject.getAsJsonObject("sprites");
+
+                if (sprites.has("front_default") && !sprites.get("front_default").isJsonNull()) {
+                    String frontDefaultImageURL = sprites.get("front_default").getAsString();
+                    return frontDefaultImageURL;
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
+
 
     public static String getMoveDescription(String moveName) {
         try {

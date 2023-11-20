@@ -44,7 +44,7 @@ public class Main {
                     }
                 } while (!nombreValido);
 
-                pokemonSeleccionado.set(selectedName);
+                pokemonSeleccionado.set(selectedName.toLowerCase());
 
                 break;
 
