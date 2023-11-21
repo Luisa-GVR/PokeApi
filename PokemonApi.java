@@ -6,10 +6,24 @@ import javax.swing.JOptionPane;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Properties;
 
 class PokemonApi {
+    private static void addToLog(String logMessage) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("bitacora.txt", true))) {
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = currentDateTime.format(formatter);
+
+            writer.write(formattedDateTime + " - " + logMessage);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private static final Properties properties = new Properties();
 
     static {
@@ -45,11 +59,18 @@ class PokemonApi {
                 String name = pokemon.get("name").getAsString();
                 names.add(name);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            addToLog("Error al conectar con el API al obtener nombres de Pokémon");
+            JOptionPane.showMessageDialog(null, "Error al conectar con el API al obtener nombres de Pokémon");
         } catch (Exception e) {
             e.printStackTrace();
+            addToLog("Error al obtener nombres de Pokémon desde el API");
+            JOptionPane.showMessageDialog(null, "Error al obtener nombres de Pokémon desde el API");
         }
         return names.toArray(new String[0]);
     }
+
 
     static String[] getPokemonTypes() {
         ArrayList<String> types = new ArrayList<>();

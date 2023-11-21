@@ -29,7 +29,7 @@ public class PokemonInfoDisplay {
         return label;
     }
     private static void addToLog(String logMessage) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("bitacora.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("bitacoraPokemonConsultado.txt", true))) {
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = currentDateTime.format(formatter);
