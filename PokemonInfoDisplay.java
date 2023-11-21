@@ -161,7 +161,7 @@ public class PokemonInfoDisplay {
         }
 
 
-        abilityLabel.setBounds((int) (dimension.width*0.65), (int)(dimension.height*0.825),
+        abilityLabel.setBounds((int) (dimension.width*0.65), (int)(dimension.height*0.837),
                 abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height+50);
 
         moveLabel.setBounds((int) (dimension.width*0.3), (int) (dimension.height*0.52),
@@ -261,12 +261,9 @@ public class PokemonInfoDisplay {
 
         layeredPane.add(saveButton, JLayeredPane.DEFAULT_LAYER);
 
-
-
         layeredPane.setPreferredSize(new Dimension(backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height));
 
         frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
-
         frame.setVisible(true);
 
         String logMessage = "Consultado Pokémon: " + selectedPokemon + ", Tipo: " + type +
