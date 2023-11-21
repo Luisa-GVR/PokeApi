@@ -37,10 +37,10 @@ public class PokemonInfoDisplay {
         return new Dimension(maxWidth, maxHeight);
     }
 
-    public static Dimension pokemonResizer(){
+    public static Dimension spriteResizer(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int maxWidth = (int) (screenSize.getWidth() * 0.15);
-        int maxHeight = (int) (screenSize.getHeight() * 0.4);
+        int maxWidth = (int) (screenSize.getWidth() * 0.04);
+        int maxHeight = (int) (screenSize.getWidth() * 0.04);
 
         return new Dimension(maxWidth, maxHeight);
     }
@@ -49,6 +49,14 @@ public class PokemonInfoDisplay {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int maxWidth = (int) (screenSize.getWidth() * 0.05);
         int maxHeight = (int) (screenSize.getWidth() * 0.05);;
+
+        return new Dimension(maxWidth, maxHeight);
+    }
+
+    public static Dimension iconResizer(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int maxWidth = (int) (screenSize.getWidth() * 0.17);
+        int maxHeight = (int) (screenSize.getWidth() * 0.17);
 
         return new Dimension(maxWidth, maxHeight);
     }
@@ -75,8 +83,9 @@ public class PokemonInfoDisplay {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension dimension = resizer();
-        Dimension pokemonDimension = pokemonResizer();
+        Dimension pokemonDimension = spriteResizer();
         Dimension typeResizer = typeResizer();
+        Dimension iconResizer = iconResizer();
 
         //imagene, resized
         String urlBackground = backgroundCheck(type);
@@ -109,7 +118,8 @@ public class PokemonInfoDisplay {
         try {
             URL imageURL = new URL(imageUrl);
             BufferedImage img = ImageIO.read(imageURL);
-            ImageIcon imageIcon = new ImageIcon(img);
+            Image resizedIcon = img.getScaledInstance(iconResizer.width,iconResizer.height, Image.SCALE_SMOOTH);
+            ImageIcon imageIcon = new ImageIcon(resizedIcon);
             imageLabel.setIcon(imageIcon);
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,9 +127,9 @@ public class PokemonInfoDisplay {
 
 
         //mas texto que nada
-        JLabel nameLabel = fontSize(firstCapitalLetter(selectedPokemon),32);
+        JLabel nameLabel = fontSize(firstCapitalLetter(selectedPokemon), (int) (dimension.height*0.05));
         JLabel typeLabel = fontSize(firstCapitalLetter(type),20);
-        JLabel abilityLabel = fontSize(firstCapitalLetter(selectedAbility),20);
+        JLabel abilityLabel = fontSize(firstCapitalLetter(selectedAbility), (int) ( dimension.height* 0.02));
         JLabel moveLabel = fontSize(firstCapitalLetter(selectedMove),20);
         JLabel moveDescLabel = fontSize(firstCapitalLetter(moveDescription),16);
         JLabel powerLabel = fontSize(firstCapitalLetter(powerCheck(moveProperties)),16);
@@ -130,20 +140,20 @@ public class PokemonInfoDisplay {
         backgroundTypeLabel.setBounds(0,0,
                 backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height);
 
-        imageLabel.setBounds(230, 100,
+        imageLabel.setBounds((int) (dimension.width*0.32), (int) (dimension.height*0.1),
                 imageLabel.getPreferredSize().width, imageLabel.getPreferredSize().height);
 
         typeIconLabel.setBounds((int) (dimension.width*0.1), (int) (dimension.height*0.65),
                 typeIconLabel.getPreferredSize().width, typeIconLabel.getPreferredSize().height);
 
-        nameLabel.setBounds(220, 70,
+        nameLabel.setBounds((int) (dimension.width*0.2), (int) (dimension.height*0.030),
                 nameLabel.getPreferredSize().width, nameLabel.getPreferredSize().height);
 
         typeLabel.setBounds((backgroundTypeLabel.getPreferredSize().width/2)-120, 576,
                 typeLabel.getPreferredSize().width, typeLabel.getPreferredSize().height);
 
-        abilityLabel.setBounds(540, 1040,
-                abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height);
+        abilityLabel.setBounds((int) (dimension.width*0.85), (int)(dimension.height*0.80),
+                abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height+50);
 
         moveLabel.setBounds(250, 800,
                 moveLabel.getPreferredSize().width, moveLabel.getPreferredSize().height);
@@ -197,24 +207,26 @@ public class PokemonInfoDisplay {
             };
 
             roundedRectanglePanel.setOpaque(false);
-            roundedRectanglePanel.setBounds(140, 125, 200, 50);
+            roundedRectanglePanel.setBounds((int) (dimension.width*0.16), (int) (dimension.height*0.11),
+                    (int) (dimension.width*0.40), (int) (dimension.height*0.04));
 
 
             JLabel preEvoName = new JLabel("Evolves from: " + firstCapitalLetter(preEvolution));
-            preEvoName.setBounds(160,140, preEvoName.getPreferredSize().width, preEvoName.getPreferredSize().height);
+            preEvoName.setBounds((int) (dimension.width*0.18),(int) (dimension.height*0.12), preEvoName.getPreferredSize().width+40, preEvoName.getPreferredSize().height);
             layeredPane.add(preEvoName, JLayeredPane.PALETTE_LAYER);
 
             JLabel spriteLabel = new JLabel();
             try {
                 URL spriteURL = new URL(spritePreEvolutionURL);
                 BufferedImage img = ImageIO.read(spriteURL);
-                ImageIcon imageIcon = new ImageIcon(img);
+                Image resizedIcon = img.getScaledInstance(pokemonDimension.width,pokemonDimension.height, Image.SCALE_SMOOTH);
+                ImageIcon imageIcon = new ImageIcon(resizedIcon);
                 spriteLabel.setIcon(imageIcon);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            spriteLabel.setBounds(50,100, spriteLabel.getPreferredSize().width,spriteLabel.getPreferredSize().height);
+            spriteLabel.setBounds((int) (dimension.width*0.05), (int) (dimension.height*0.08), spriteLabel.getPreferredSize().width,spriteLabel.getPreferredSize().height);
 
             //circulo
             CirclePanel circlePanel = new CirclePanel();
