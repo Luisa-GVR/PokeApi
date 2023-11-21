@@ -90,13 +90,13 @@ public class PokemonInfoDisplay {
         //imagene, resized
         String urlBackground = backgroundCheck(type);
         ImageIcon typeBackground = new ImageIcon(urlBackground);
-        Image resized = typeBackground.getImage().getScaledInstance(dimension.width, dimension.height,Image.SCALE_SMOOTH);
+        Image resized = typeBackground.getImage().getScaledInstance(dimension.width, dimension.height, Image.SCALE_SMOOTH);
         ImageIcon resIcon = new ImageIcon(resized);
         JLabel backgroundTypeLabel = new JLabel(resIcon);
 
         String urlType;
         //Hace especial si no hay properties
-        if (!moveProperties.equals("")){
+        if (!moveProperties.equals("")) {
             urlType = typeCheck(moveProperties);
         } else {
             urlType = "iconosTipos/especial.png";
@@ -108,8 +108,7 @@ public class PokemonInfoDisplay {
         JLabel typeIconLabel = new JLabel(resIconLabel);
 
 
-
-        frame.setSize(backgroundTypeLabel.getPreferredSize().width+20, backgroundTypeLabel.getPreferredSize().height+80);
+        frame.setSize(backgroundTypeLabel.getPreferredSize().width + 20, backgroundTypeLabel.getPreferredSize().height + 80);
         frame.setResizable(false);
 
         JLayeredPane layeredPane = new JLayeredPane();
@@ -118,56 +117,66 @@ public class PokemonInfoDisplay {
         try {
             URL imageURL = new URL(imageUrl);
             BufferedImage img = ImageIO.read(imageURL);
-            Image resizedIcon = img.getScaledInstance(iconResizer.width,iconResizer.height, Image.SCALE_SMOOTH);
+            Image resizedIcon = img.getScaledInstance(iconResizer.width, iconResizer.height, Image.SCALE_SMOOTH);
             ImageIcon imageIcon = new ImageIcon(resizedIcon);
             imageLabel.setIcon(imageIcon);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        moveDescription = "<html>"+ moveDescription + "<html>";
+        moveDescription =addLineBreaks(moveDescription, 8);
+
 
         //mas texto que nada
-        JLabel nameLabel = fontSize(firstCapitalLetter(selectedPokemon), (int) (dimension.height*0.05));
-        JLabel typeLabel = fontSize(firstCapitalLetter(type),20);
-        JLabel abilityLabel = fontSize(firstCapitalLetter(selectedAbility), (int) ( dimension.height* 0.02));
-        JLabel moveLabel = fontSize(firstCapitalLetter(selectedMove),20);
-        JLabel moveDescLabel = fontSize(firstCapitalLetter(moveDescription),16);
-        JLabel powerLabel = fontSize(firstCapitalLetter(powerCheck(moveProperties)),16);
-        JLabel accLabel = fontSize(firstCapitalLetter(accCheck(moveProperties)),16);
-        JLabel pokedexLabel = fontSize(firstCapitalLetter(pokedex),16);
+        JLabel nameLabel = fontSize(firstCapitalLetter(selectedPokemon), (int) (dimension.height * 0.05));
+        JLabel typeLabel = fontSize(firstCapitalLetter(type), (int) (dimension.height * 0.0235));
+        JLabel abilityLabel = fontSize(firstCapitalLetter(selectedAbility), (int) (dimension.height * 0.02));
+        JLabel moveLabel = fontSize(firstCapitalLetter(selectedMove), (int) (dimension.height * 0.035));
+        JLabel moveDescLabel = fontSize(firstCapitalLetter(moveDescription), (int) (dimension.height * 0.020));
+        JLabel powerLabel = fontSize(firstCapitalLetter(powerCheck(moveProperties)), (int) (dimension.height * 0.02));
+        JLabel accLabel = fontSize(firstCapitalLetter(accCheck(moveProperties)), (int) (dimension.height * 0.02));
+        JLabel pokedexLabel = fontSize(firstCapitalLetter(addLineBreaks(pokedex,15)), (int) (dimension.height * 0.015));
 
         // Establecer los límites de los componentes
-        backgroundTypeLabel.setBounds(0,0,
+        backgroundTypeLabel.setBounds(0, 0,
                 backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height);
 
-        imageLabel.setBounds((int) (dimension.width*0.32), (int) (dimension.height*0.1),
+
+        imageLabel.setBounds((int) (dimension.width * 0.30), (int) (dimension.height * 0.12),
                 imageLabel.getPreferredSize().width, imageLabel.getPreferredSize().height);
 
-        typeIconLabel.setBounds((int) (dimension.width*0.1), (int) (dimension.height*0.65),
+        typeIconLabel.setBounds((int) (dimension.width * 0.1), (int) (dimension.height * 0.55),
                 typeIconLabel.getPreferredSize().width, typeIconLabel.getPreferredSize().height);
 
-        nameLabel.setBounds((int) (dimension.width*0.2), (int) (dimension.height*0.030),
-                nameLabel.getPreferredSize().width, nameLabel.getPreferredSize().height);
+        nameLabel.setBounds((int) (dimension.width * 0.2), (int) (dimension.height * 0.030),
+                nameLabel.getPreferredSize().width + 100, nameLabel.getPreferredSize().height);
 
-        typeLabel.setBounds((backgroundTypeLabel.getPreferredSize().width/2)-120, 576,
-                typeLabel.getPreferredSize().width, typeLabel.getPreferredSize().height);
+        //centrar el label type
+        if(type.contains("Secondary")){
+            typeLabel.setBounds((int) (dimension.width*0.2), (int) (dimension.height*0.475),
+                    typeLabel.getPreferredSize().width+100, typeLabel.getPreferredSize().height);
+        } else {typeLabel.setBounds((int) (dimension.width*0.35), (int) (dimension.height*0.475),
+                    typeLabel.getPreferredSize().width+100, typeLabel.getPreferredSize().height);
+        }
 
-        abilityLabel.setBounds((int) (dimension.width*0.85), (int)(dimension.height*0.80),
+
+        abilityLabel.setBounds((int) (dimension.width*0.65), (int)(dimension.height*0.825),
                 abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height+50);
 
-        moveLabel.setBounds(250, 800,
-                moveLabel.getPreferredSize().width, moveLabel.getPreferredSize().height);
+        moveLabel.setBounds((int) (dimension.width*0.3), (int) (dimension.height*0.52),
+                (int) (moveLabel.getPreferredSize().width*1.2), moveLabel.getPreferredSize().height);
 
-        moveDescLabel.setBounds(250, 855,
+        moveDescLabel.setBounds((int) (dimension.width*0.26), (int) (dimension.height*0.57),
                 moveDescLabel.getPreferredSize().width, moveDescLabel.getPreferredSize().height);
 
-        pokedexLabel.setBounds(100,1100,
-                pokedexLabel.getPreferredSize().width, pokedexLabel.getPreferredSize().height);
+        pokedexLabel.setBounds((int) (dimension.width*0.06), (int) (dimension.height*0.9),
+                (int) (pokedexLabel.getPreferredSize().width*1.1), (int) (pokedexLabel.getPreferredSize().height*1.1));
 
-        accLabel.setBounds(270,1038,
+        accLabel.setBounds((int) (dimension.width*0.1), (int) (dimension.height*0.86),
                 accLabel.getPreferredSize().width, accLabel.getPreferredSize().height);
 
-        powerLabel.setBounds(130, 1038,
+        powerLabel.setBounds((int) (dimension.width*0.3), (int) (dimension.height*0.86),
                 powerLabel.getPreferredSize().width, powerLabel.getPreferredSize().height);
 
 
@@ -242,8 +251,8 @@ public class PokemonInfoDisplay {
 
         //boton de guardado
         JButton saveButton = new JButton("Save");
-        saveButton.setBounds((backgroundTypeLabel.getPreferredSize().width/2)-25, backgroundTypeLabel.getPreferredSize().height+5,
-                saveButton.getPreferredSize().width, saveButton.getPreferredSize().height);
+        saveButton.setBounds((int) (backgroundTypeLabel.getPreferredSize().width / 2.25),
+                backgroundTypeLabel.getPreferredSize().height + 5, (int) (dimension.width*0.15), (int) (dimension.height*0.05));
         saveButton.addActionListener(e -> {
             saveButton.setVisible(false);
             saveLayeredPaneAsImage(layeredPane);
@@ -266,6 +275,22 @@ public class PokemonInfoDisplay {
         addToLog(logMessage);
 
     }
+
+    private static String addLineBreaks(String moveDescription, int wordsPerLine) {
+        String[] words = moveDescription.split("\\s+");
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < words.length; i++) {
+            result.append(words[i]).append(" ");
+
+            if ((i + 1) % wordsPerLine == 0) {
+                result.append("<br>");
+            }
+        }
+
+        return result.toString();
+    }
+
 
 
     private static void saveLayeredPaneAsImage(JLayeredPane layeredPane) {
