@@ -2,9 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -24,6 +28,18 @@ public class PokemonInfoDisplay {
         label.setFont(new Font("Comics Sans MS", Font.BOLD, size)); // Puedes ajustar el tamaño según tus necesidades
         return label;
     }
+    private static void addToLog(String logMessage) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("bitacora.txt", true))) {
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = currentDateTime.format(formatter);
+
+            writer.write(formattedDateTime + " - " + logMessage);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     
@@ -40,7 +56,7 @@ public class PokemonInfoDisplay {
         ImageIcon typeBackground = new ImageIcon(urlBackground);
         JLabel backgroundTypeLabel = new JLabel(typeBackground);
 
-        String urlType = "";
+        String urlType;
         //Hace especial si no hay properties
         if (!moveProperties.equals("")){
             urlType = typeCheck(moveProperties);
@@ -190,6 +206,10 @@ public class PokemonInfoDisplay {
         frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
         frame.setVisible(true);
 
+        String logMessage = "Consultado Pokémon: " + selectedPokemon + ", Tipo: " + type +
+                ", Habilidad: " + selectedAbility + ", Movimiento: " + selectedMove +
+                ", Pokedex: " + pokedex;
+        addToLog(logMessage);
 
     }
 
