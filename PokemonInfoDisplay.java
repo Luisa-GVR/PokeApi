@@ -28,6 +28,31 @@ public class PokemonInfoDisplay {
         label.setFont(new Font("Comics Sans MS", Font.BOLD, size)); // Puedes ajustar el tamaño según tus necesidades
         return label;
     }
+
+    public static Dimension resizer(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int maxWidth = (int) (screenSize.getWidth() * 0.35);
+        int maxHeight = (int) (screenSize.getHeight() * 0.8);
+
+        return new Dimension(maxWidth, maxHeight);
+    }
+
+    public static Dimension pokemonResizer(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int maxWidth = (int) (screenSize.getWidth() * 0.15);
+        int maxHeight = (int) (screenSize.getHeight() * 0.4);
+
+        return new Dimension(maxWidth, maxHeight);
+    }
+
+    public static Dimension typeResizer(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int maxWidth = (int) (screenSize.getWidth() * 0.05);
+        int maxHeight = (int) (screenSize.getWidth() * 0.05);;
+
+        return new Dimension(maxWidth, maxHeight);
+    }
+
     private static void addToLog(String logMessage) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("bitacoraPokemonConsultado.txt", true))) {
             LocalDateTime currentDateTime = LocalDateTime.now();
@@ -49,12 +74,16 @@ public class PokemonInfoDisplay {
         JFrame frame = new JFrame("Información del Pokémon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        Dimension dimension = resizer();
+        Dimension pokemonDimension = pokemonResizer();
+        Dimension typeResizer = typeResizer();
 
-
-        //imagenes
+        //imagene, resized
         String urlBackground = backgroundCheck(type);
         ImageIcon typeBackground = new ImageIcon(urlBackground);
-        JLabel backgroundTypeLabel = new JLabel(typeBackground);
+        Image resized = typeBackground.getImage().getScaledInstance(dimension.width, dimension.height,Image.SCALE_SMOOTH);
+        ImageIcon resIcon = new ImageIcon(resized);
+        JLabel backgroundTypeLabel = new JLabel(resIcon);
 
         String urlType;
         //Hace especial si no hay properties
@@ -65,7 +94,9 @@ public class PokemonInfoDisplay {
         }
 
         ImageIcon typeIcon = new ImageIcon(urlType);
-        JLabel typeIconLabel = new JLabel(typeIcon);
+        Image resizedTypeIcon = typeIcon.getImage().getScaledInstance(typeResizer.width, typeResizer.height, Image.SCALE_SMOOTH);
+        ImageIcon resIconLabel = new ImageIcon(resizedTypeIcon);
+        JLabel typeIconLabel = new JLabel(resIconLabel);
 
 
 
@@ -98,24 +129,34 @@ public class PokemonInfoDisplay {
         // Establecer los límites de los componentes
         backgroundTypeLabel.setBounds(0,0,
                 backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height);
+
         imageLabel.setBounds(230, 100,
                 imageLabel.getPreferredSize().width, imageLabel.getPreferredSize().height);
-        typeIconLabel.setBounds(80, 800,
+
+        typeIconLabel.setBounds((int) (dimension.width*0.1), (int) (dimension.height*0.65),
                 typeIconLabel.getPreferredSize().width, typeIconLabel.getPreferredSize().height);
+
         nameLabel.setBounds(220, 70,
                 nameLabel.getPreferredSize().width, nameLabel.getPreferredSize().height);
+
         typeLabel.setBounds((backgroundTypeLabel.getPreferredSize().width/2)-120, 576,
                 typeLabel.getPreferredSize().width, typeLabel.getPreferredSize().height);
+
         abilityLabel.setBounds(540, 1040,
                 abilityLabel.getPreferredSize().width, abilityLabel.getPreferredSize().height);
+
         moveLabel.setBounds(250, 800,
                 moveLabel.getPreferredSize().width, moveLabel.getPreferredSize().height);
+
         moveDescLabel.setBounds(250, 855,
                 moveDescLabel.getPreferredSize().width, moveDescLabel.getPreferredSize().height);
+
         pokedexLabel.setBounds(100,1100,
                 pokedexLabel.getPreferredSize().width, pokedexLabel.getPreferredSize().height);
+
         accLabel.setBounds(270,1038,
                 accLabel.getPreferredSize().width, accLabel.getPreferredSize().height);
+
         powerLabel.setBounds(130, 1038,
                 powerLabel.getPreferredSize().width, powerLabel.getPreferredSize().height);
 
@@ -204,6 +245,7 @@ public class PokemonInfoDisplay {
         layeredPane.setPreferredSize(new Dimension(backgroundTypeLabel.getPreferredSize().width, backgroundTypeLabel.getPreferredSize().height));
 
         frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
+
         frame.setVisible(true);
 
         String logMessage = "Consultado Pokémon: " + selectedPokemon + ", Tipo: " + type +
