@@ -108,7 +108,7 @@ public class PokemonInfoDisplay {
         JLabel typeIconLabel = new JLabel(resIconLabel);
 
 
-        frame.setSize(backgroundTypeLabel.getPreferredSize().width + 20, backgroundTypeLabel.getPreferredSize().height + 80);
+        frame.setSize((int) (backgroundTypeLabel.getPreferredSize().width *1.02), (int) (backgroundTypeLabel.getPreferredSize().height *1.09));
         frame.setResizable(false);
 
         JLayeredPane layeredPane = new JLayeredPane();
